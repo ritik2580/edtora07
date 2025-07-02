@@ -35,7 +35,7 @@ const Footer = () => {
                   <Facebook size={18} className="text-white" />
                 </motion.a>
                 <motion.a 
-                  href="https://www.instagram.com/p/DLchB56S4wN/?igsh=MTRpbWxzd3M0M2FjdQ==" 
+                  href="https://www.instagram.com/editorastudio07?igsh=dWw3c3R5Z2VqY2ty" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-fuchsia-500 transition-colors duration-300"
