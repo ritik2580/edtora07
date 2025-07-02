@@ -16,20 +16,23 @@ const ParticleBackground = () => {
           enable: true,
           zIndex: -1,
         },
-        fpsLimit: 120,
+        fpsLimit: 60,
         particles: {
           number: {
-            value: 80,
+            value: 100,
             density: {
               enable: true,
-              value_area: 800,
+              value_area: 1000,
             },
           },
           color: {
             value: ["#ff00c8", "#00e5ff", "#ffffff"],
           },
           shape: {
-            type: "circle",
+            type: ["circle", "triangle", "polygon"],
+            polygon: {
+              sides: 5
+            }
           },
           opacity: {
             value: 0.2,
@@ -42,7 +45,7 @@ const ParticleBackground = () => {
             },
           },
           size: {
-            value: 3,
+            value: 2.5,
             random: true,
             anim: {
               enable: true,
@@ -57,15 +60,25 @@ const ParticleBackground = () => {
             color: "#ff00c8",
             opacity: 0.2,
             width: 1,
+            triangles: {
+              enable: true,
+              color: "#00e5ff",
+              opacity: 0.05
+            }
           },
           move: {
             enable: true,
-            speed: 1,
+            speed: 1.2,
             direction: "none",
             random: true,
             straight: false,
             out_mode: "out",
             bounce: false,
+            attract: {
+              enable: true,
+              rotateX: 600,
+              rotateY: 1200
+            }
           },
         },
         interactivity: {
@@ -73,7 +86,12 @@ const ParticleBackground = () => {
           events: {
             onhover: {
               enable: true,
-              mode: "grab",
+              mode: "bubble",
+              parallax: {
+                enable: true,
+                force: 60,
+                smooth: 10
+              }
             },
             onclick: {
               enable: true,
@@ -88,10 +106,32 @@ const ParticleBackground = () => {
                 opacity: 0.5,
               },
             },
-            push: {
-              particles_nb: 3,
+            bubble: {
+              distance: 200,
+              size: 5,
+              duration: 2,
+              opacity: 0.8,
+              speed: 3
             },
+            push: {
+              particles_nb: 4,
+            },
+            remove: {
+              particles_nb: 2
+            }
           },
+        },
+        background: {
+          color: {
+            value: "#050510"
+          },
+          image: "",
+          position: "50% 50%",
+          repeat: "no-repeat",
+          size: "cover"
+        },
+        backgroundMask: {
+          enable: false
         },
         retina_detect: true,
       }}
