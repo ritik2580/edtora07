@@ -20,7 +20,7 @@ const Hero = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <motion.h1 
-              className="text-5xl md:text-7xl font-bold font-display mb-6 glitch-text"
+              className="text-4xl sm:text-5xl md:text-7xl font-bold font-display mb-4 sm:mb-6 glitch-text"
               data-text="EDITORA"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -30,7 +30,7 @@ const Hero = () => {
             </motion.h1>
             
             <motion.p 
-              className="text-xl md:text-2xl text-white/70 mb-8"
+              className="text-lg sm:text-xl md:text-2xl text-white/70 mb-6 sm:mb-8"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.5 }}
@@ -39,14 +39,14 @@ const Hero = () => {
             </motion.p>
             
             <motion.div 
-              className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4"
+              className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-3 sm:gap-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.7 }}
             >
               <motion.a 
                 href="#projects" 
-                className="px-8 py-3 bg-gradient-to-r from-fuchsia-600 to-fuchsia-500 hover:from-fuchsia-500 hover:to-fuchsia-600 text-white font-medium rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-fuchsia-500/20 transform hover:-translate-y-1"
+                className="px-6 py-2.5 sm:px-8 sm:py-3 bg-gradient-to-r from-fuchsia-600 to-fuchsia-500 hover:from-fuchsia-500 hover:to-fuchsia-600 text-white font-medium rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-fuchsia-500/20 transform hover:-translate-y-1 text-sm sm:text-base"
                 whileHover={{ 
                   scale: 1.05, 
                   boxShadow: "0 10px 25px -5px rgba(255, 0, 200, 0.4)",
@@ -58,7 +58,7 @@ const Hero = () => {
               </motion.a>
               <motion.a 
                 href="#contact" 
-                className="px-8 py-3 bg-transparent border border-white/30 text-white font-medium rounded-full transition-all duration-300 hover:bg-white/10 hover:border-white/50 transform hover:-translate-y-1"
+                className="px-6 py-2.5 sm:px-8 sm:py-3 bg-transparent border border-white/30 text-white font-medium rounded-full transition-all duration-300 hover:bg-white/10 hover:border-white/50 transform hover:-translate-y-1 text-sm sm:text-base"
                 whileHover={{ 
                   scale: 1.05, 
                   borderColor: "rgba(255, 0, 200, 0.5)",
