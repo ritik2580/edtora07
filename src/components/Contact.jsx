@@ -124,12 +124,12 @@ const Contact = () => {
                     <div>
                       <h4 className="text-white font-medium mb-1">Instagram</h4>
                       <a 
-                        href="https://www.instagram.com/p/DLchB56S4wN/?igsh=MTRpbWxzd3M0M2FjdQ==" 
+                        href="https://www.instagram.com/editorastudio07?igsh=dWw3c3R5Z2VqY2ty" 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-white/70 hover:text-fuchsia-400 transition-colors"
                       >
-                        @editorastudio
+                        @editorastudio07
                       </a>
                     </div>
                   </motion.div>
@@ -150,7 +150,7 @@ const Contact = () => {
                       </svg>
                     </motion.a>
                     <motion.a 
-                      href="https://www.instagram.com/p/DLchB56S4wN/?igsh=MTRpbWxzd3M0M2FjdQ==" 
+                      href="https://www.instagram.com/editorastudio07?igsh=dWw3c3R5Z2VqY2ty" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-fuchsia-500 transition-colors duration-300"
