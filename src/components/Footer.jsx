@@ -90,7 +90,7 @@ const Footer = () => {
                 >
                   <span className="text-fuchsia-500 mr-3 mt-1">📱</span>
                   <div>
-                    <p className="text-white/70">Laxman: +91 9536428507</p>
+                    <p className="text-white/70"> +91 9536428507</p>
                   </div>
                 </motion.li>
                 <motion.li 
@@ -121,7 +121,7 @@ const Footer = () => {
                     rel="noopener noreferrer"
                     className="text-white/70 hover:text-fuchsia-400 transition-colors"
                   >
-                    Instagram: @editorastudio
+                    Instagram: @editorastudio07
                   </a>
                 </motion.li>
               </ul>
