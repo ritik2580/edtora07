@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
+import laxmanImg from '../laxman.jpg';
+import ayushImg from '../ayush.jpg';
 
 const teamMembers = [
   {
