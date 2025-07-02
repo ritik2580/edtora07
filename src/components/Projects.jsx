@@ -48,8 +48,8 @@ const projects = [
 ];
 
 const viewModeOptions = [
-  { id: 'grid', icon: Grid2x2, label: 'Grid2x2 View' },
-  { id: 'cinematic', icon: Film, label: 'Cinematic View' },
+  { id: 'grid', icon: Grid2x2, label: 'Grid View' },
+  { id: 'cinematic', icon: Film, label: 'Cinematic' },
   { id: 'list', icon: List, label: 'List View' }
 ];
 
@@ -65,7 +65,13 @@ const Projects = () => {
     threshold: 0.1,
   });
 
-  const visibleProjects = viewMode === 'list' ? 2 : 3; // Number of projects visible at once depending on view mode
+  // Determine number of visible projects based on view mode and screen size
+  const getVisibleProjects = () => {
+    if (viewMode === 'list') return window.innerWidth < 768 ? 1 : 2;
+    return window.innerWidth < 768 ? 1 : 3;
+  };
+
+  const visibleProjects = getVisibleProjects();
   const maxIndex = Math.max(0, projects.length - visibleProjects);
 
   const nextProject = () => {
@@ -98,7 +104,10 @@ const Projects = () => {
     setCurrentIndex(0); // Reset to first page when changing view modes
   };
 
-  const openDriveVideo = (driveUrl) => {
+  const openDriveVideo = (driveUrl, e) => {
+    if (e) {
+      e.stopPropagation();
+    }
     window.open(driveUrl, '_blank');
   };
 
@@ -108,21 +117,25 @@ const Projects = () => {
       case 'grid':
         return (
           <div 
-            className="flex gap-6 transition-transform duration-500 ease-out"
-            style={{ 
-              transform: `translateX(-${currentIndex * (100 / visibleProjects)}%)`,
-              width: `${(projects.length / visibleProjects) * 100}%`
-            }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 px-2 sm:px-0"
+            style={{ maxWidth: '100%', overflowX: 'hidden' }}
           >
-            {projects.map((project, index) => (
+            {projects.slice(currentIndex, currentIndex + visibleProjects).map((project, index) => (
               <motion.div 
                 key={project.id}
-                className="w-full md:w-1/3 flex-shrink-0 group cursor-pointer"
-                whileHover={{ y: -10 }}
-                transition={{ duration: 0.3 }}
+                className="w-full flex-shrink-0 group cursor-pointer"
+                whileHover={{ y: -5 }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
                 onClick={() => openDriveVideo(project.driveUrl)}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: index * 0.1,
+                  hover: { duration: 0.3 }
+                }}
               >
                 <div className="relative overflow-hidden rounded-xl aspect-video bg-zinc-800 border border-white/10 group">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
@@ -131,28 +144,26 @@ const Projects = () => {
                     src={project.image} 
                     alt={project.title} 
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                    loading="lazy"
                   />
                   
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20">
                     <motion.div 
-                      className="w-16 h-16 rounded-full bg-fuchsia-500 flex items-center justify-center cursor-pointer"
+                      className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-fuchsia-500 flex items-center justify-center cursor-pointer"
                       initial={{ scale: 0 }}
                       animate={hoveredIndex === index ? { scale: 1 } : { scale: 0 }}
                       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openDriveVideo(project.driveUrl);
-                      }}
+                      onClick={(e) => openDriveVideo(project.driveUrl, e)}
                     >
-                      <Play className="text-white" fill="white" size={24} />
+                      <Play className="text-white" fill="white" size={16} />
                     </motion.div>
                   </div>
                   
-                  <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
-                    <h3 className="text-xl font-bold text-white mb-2 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                  <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 z-10">
+                    <h3 className="text-base sm:text-lg font-bold text-white mb-1 transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                       {project.title}
                     </h3>
-                    <p className="text-cyan-400 text-sm transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 delay-100">
+                    <p className="text-cyan-400 text-xs transform translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 delay-100">
                       {project.category}
                     </p>
                   </div>
@@ -164,117 +175,122 @@ const Projects = () => {
 
       case 'cinematic':
         return (
-          <div 
-            className="flex flex-col gap-10 transition-transform duration-500 ease-out"
-            style={{ 
-              transform: `translateY(-${currentIndex * 100}%)`,
-            }}
-          >
-            {projects.map((project, index) => (
-              <motion.div 
-                key={project.id}
-                className="w-full flex-shrink-0 group"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="relative overflow-hidden rounded-xl aspect-[21/9] bg-zinc-800 border border-white/10 group">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-50 group-hover:opacity-30 transition-opacity duration-300 z-10"></div>
-                  
-                  <img 
-                    src={project.image} 
-                    alt={project.title} 
-                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                  
-                  <div className="absolute bottom-8 left-8 right-8 z-20">
-                    <div className="flex items-center mb-4">
-                      <div 
-                        className="w-12 h-12 rounded-full bg-fuchsia-500 flex items-center justify-center mr-4 cursor-pointer hover:bg-fuchsia-600 transition-colors"
-                        onClick={() => openDriveVideo(project.driveUrl)}
-                      >
-                        <Play className="text-white" fill="white" size={20} />
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-bold text-white mb-1">
-                          {project.title}
-                        </h3>
-                        <div className="flex items-center">
-                          <span className="text-cyan-400 text-sm mr-4">
-                            {project.category}
-                          </span>
-                          <span className="text-white/60 text-sm">
-                            {project.duration}
-                          </span>
+          <div className="w-full px-2 sm:px-0">
+            <AnimatePresence mode="wait">
+              {projects.slice(currentIndex, currentIndex + 1).map((project) => (
+                <motion.div 
+                  key={project.id}
+                  className="w-full flex-shrink-0 group cursor-pointer"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.5 }}
+                  onClick={() => openDriveVideo(project.driveUrl)}
+                >
+                  <div className="relative overflow-hidden rounded-xl aspect-video sm:aspect-[21/9] bg-zinc-800 border border-white/10 group">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-50 group-hover:opacity-30 transition-opacity duration-300 z-10"></div>
+                    
+                    <img 
+                      src={project.image} 
+                      alt={project.title} 
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    
+                    <div className="absolute bottom-3 sm:bottom-6 left-3 sm:left-6 right-3 sm:right-6 z-20">
+                      <div className="flex items-center mb-2 sm:mb-3">
+                        <div 
+                          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-fuchsia-500 flex items-center justify-center mr-3 cursor-pointer hover:bg-fuchsia-600 transition-colors"
+                          onClick={(e) => openDriveVideo(project.driveUrl, e)}
+                        >
+                          <Play className="text-white" fill="white" size={14} />
+                        </div>
+                        <div>
+                          <h3 className="text-lg sm:text-xl font-bold text-white mb-0">
+                            {project.title}
+                          </h3>
+                          <div className="flex items-center flex-wrap">
+                            <span className="text-cyan-400 text-xs mr-3">
+                              {project.category}
+                            </span>
+                            <span className="text-white/60 text-xs">
+                              {project.duration}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <p className="text-white/80 max-w-4xl">
-                      {project.description}
-                    </p>
-                    <div className="mt-4">
-                      <button 
-                        onClick={() => openDriveVideo(project.driveUrl)}
-                        className="flex items-center gap-2 text-white/70 hover:text-cyan-400 transition-colors text-sm"
-                      >
-                        <ExternalLink size={16} /> Watch on Drive
-                      </button>
+                      <p className="text-white/80 text-xs sm:text-sm hidden sm:block max-w-4xl">
+                        {project.description}
+                      </p>
+                      <div className="mt-2 sm:mt-3">
+                        <button 
+                          onClick={(e) => openDriveVideo(project.driveUrl, e)}
+                          className="flex items-center gap-2 text-white/70 hover:text-cyan-400 transition-colors text-xs"
+                        >
+                          <ExternalLink size={12} /> Watch on Drive
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
         );
 
       case 'list':
         return (
-          <div className="flex flex-col gap-6 transition-transform duration-500 ease-out">
+          <div className="flex flex-col gap-3 sm:gap-4 px-2 sm:px-0">
             {projects.slice(currentIndex, currentIndex + visibleProjects).map((project, index) => (
               <motion.div 
                 key={project.id}
-                className="w-full flex-shrink-0 group"
+                className="w-full flex-shrink-0 group cursor-pointer"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
+                onClick={() => openDriveVideo(project.driveUrl)}
               >
-                <div className="flex items-center gap-6 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors duration-300">
-                  <div className="relative w-40 md:w-60 aspect-video rounded-lg overflow-hidden flex-shrink-0">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors duration-300">
+                  <div className="relative w-full sm:w-36 md:w-48 aspect-video rounded-lg overflow-hidden flex-shrink-0">
                     <img 
                       src={project.image} 
                       alt={project.title} 
                       className="w-full h-full object-cover"
+                      loading="lazy"
                     />
                     <div 
                       className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center cursor-pointer"
-                      onClick={() => openDriveVideo(project.driveUrl)}
+                      onClick={(e) => openDriveVideo(project.driveUrl, e)}
                     >
-                      <div className="w-12 h-12 rounded-full bg-fuchsia-500 flex items-center justify-center">
-                        <Play className="text-white" fill="white" size={20} />
+                      <div className="w-10 h-10 rounded-full bg-fuchsia-500 flex items-center justify-center">
+                        <Play className="text-white" fill="white" size={16} />
                       </div>
                     </div>
                   </div>
                   
-                  <div className="flex-grow">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="text-xl font-bold text-white">{project.title}</h3>
-                      <span className="text-white/60 text-sm">{project.duration}</span>
+                  <div className="flex-grow w-full sm:w-auto">
+                    <div className="flex justify-between items-start mb-1">
+                      <h3 className="text-base sm:text-lg font-bold text-white">{project.title}</h3>
+                      <span className="text-white/60 text-xs">{project.duration}</span>
                     </div>
-                    <p className="text-cyan-400 text-sm mb-3">{project.category}</p>
-                    <p className="text-white/70 text-sm mb-4">{project.description}</p>
-                    <div className="flex gap-4">
+                    <p className="text-cyan-400 text-xs mb-2">{project.category}</p>
+                    <p className="text-white/70 text-xs mb-2 hidden sm:block">{project.description}</p>
+                    <div className="flex flex-wrap gap-2">
                       <button 
-                        onClick={() => openDriveVideo(project.driveUrl)}
-                        className="px-4 py-2 bg-white/5 rounded-full text-sm text-white hover:bg-fuchsia-500/80 transition-colors flex items-center gap-2"
+                        onClick={(e) => openDriveVideo(project.driveUrl, e)}
+                        className="px-2.5 py-1 sm:px-3 sm:py-1.5 bg-white/5 rounded-full text-xs text-white hover:bg-fuchsia-500/80 transition-colors flex items-center gap-1"
                       >
-                        <Play size={14} /> Watch Video
+                        <Play size={10} /> Watch Video
                       </button>
                       <a 
                         href={project.url}
                         target="_blank"
                         rel="noopener noreferrer" 
-                        className="px-4 py-2 bg-white/5 rounded-full text-sm text-white hover:bg-white/10 transition-colors flex items-center gap-2"
+                        className="px-2.5 py-1 sm:px-3 sm:py-1.5 bg-white/5 rounded-full text-xs text-white hover:bg-white/10 transition-colors flex items-center gap-1"
+                        onClick={(e) => e.stopPropagation()}
                       >
-                        <ExternalLink size={14} /> Project Details
+                        <ExternalLink size={10} /> Details
                       </a>
                     </div>
                   </div>
@@ -290,40 +306,40 @@ const Projects = () => {
   };
 
   return (
-    <section id="projects" ref={ref} className="py-24 bg-black relative overflow-hidden">
+    <section id="projects" ref={ref} className="py-12 md:py-20 bg-black relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0 bg-[url('https://assets.website-files.com/61d1bff2b961eaf3ff3abd7c/620e923bab9dfa1e21f4be41_noise.png')] opacity-[0.05] mix-blend-overlay"></div>
       <div className="absolute -top-40 -right-40 w-80 h-80 bg-fuchsia-500/10 rounded-full blur-3xl"></div>
       <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl"></div>
 
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <motion.div 
           variants={sectionVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           className="flex flex-col items-center"
         >
-          <motion.div className="text-center mb-16" variants={itemVariants}>
-            <h2 className="text-3xl md:text-4xl font-bold font-display mb-4">Featured Projects</h2>
-            <div className="w-20 h-1 bg-gradient-to-r from-fuchsia-500 to-cyan-500 mx-auto"></div>
-            <p className="text-white/70 max-w-xl mx-auto mt-6">
+          <motion.div className="text-center mb-8 md:mb-12" variants={itemVariants}>
+            <h2 className="text-2xl md:text-3xl font-bold font-display mb-3">Featured Projects</h2>
+            <div className="w-16 h-1 bg-gradient-to-r from-fuchsia-500 to-cyan-500 mx-auto"></div>
+            <p className="text-white/70 max-w-xl mx-auto mt-4 text-sm sm:text-base px-2">
               Explore our portfolio of high-quality video productions across various styles and industries.
             </p>
           </motion.div>
 
           {/* View Mode Switcher */}
           <motion.div 
-            className="mb-12 flex justify-center"
+            className="mb-6 md:mb-8 flex justify-center"
             variants={itemVariants}
           >
-            <div className="flex p-1.5 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 shadow-lg">
+            <div className="flex p-1 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 shadow-lg">
               {viewModeOptions.map((option, index) => {
                 const Icon = option.icon;
                 return (
                   <motion.button
                     key={option.id}
                     onClick={() => changeViewMode(option.id, index)}
-                    className={`relative px-4 py-2 rounded-full flex items-center gap-2 ${
+                    className={`relative px-2 py-1 sm:px-3 sm:py-1.5 rounded-full flex items-center gap-1 ${
                       activeViewModeButton === index ? 'text-white' : 'text-white/50'
                     }`}
                     whileHover={{ scale: 1.05 }}
@@ -337,9 +353,9 @@ const Projects = () => {
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
                       />
                     )}
-                    <span className="relative z-10 flex items-center gap-2">
-                      <Icon size={16} />
-                      <span className="hidden md:inline">{option.label}</span>
+                    <span className="relative z-10 flex items-center gap-1 sm:gap-1.5">
+                      <Icon size={14} />
+                      <span className="text-xs hidden sm:block">{option.label}</span>
                     </span>
                   </motion.button>
                 );
@@ -353,33 +369,33 @@ const Projects = () => {
           >
             {viewMode !== 'cinematic' && (
               <>
-                <div className="absolute top-1/2 -left-4 transform -translate-y-1/2 z-20 md:block hidden">
+                <div className="absolute top-1/2 -left-2 sm:-left-4 transform -translate-y-1/2 z-20 hidden sm:block">
                   <button 
                     onClick={prevProject} 
                     disabled={currentIndex === 0}
-                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                    className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
                       currentIndex === 0 
                         ? 'bg-white/5 text-white/30 cursor-not-allowed' 
                         : 'bg-white/10 text-white hover:bg-fuchsia-500 hover:scale-110'
                     }`}
                     aria-label="Previous project"
                   >
-                    <ChevronLeft size={20} />
+                    <ChevronLeft size={16} />
                   </button>
                 </div>
 
-                <div className="absolute top-1/2 -right-4 transform -translate-y-1/2 z-20 md:block hidden">
+                <div className="absolute top-1/2 -right-2 sm:-right-4 transform -translate-y-1/2 z-20 hidden sm:block">
                   <button 
                     onClick={nextProject} 
                     disabled={currentIndex >= maxIndex}
-                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                    className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
                       currentIndex >= maxIndex 
                         ? 'bg-white/5 text-white/30 cursor-not-allowed' 
                         : 'bg-white/10 text-white hover:bg-fuchsia-500 hover:scale-110'
                     }`}
                     aria-label="Next project"
                   >
-                    <ChevronRight size={20} />
+                    <ChevronRight size={16} />
                   </button>
                 </div>
               </>
@@ -387,7 +403,7 @@ const Projects = () => {
 
             <div 
               ref={galleryRef} 
-              className="w-full overflow-hidden py-4"
+              className="w-full overflow-hidden py-2"
             >
               <AnimatePresence mode="wait">
                 <motion.div
@@ -403,41 +419,41 @@ const Projects = () => {
             </div>
 
             {viewMode !== 'cinematic' && (
-              <div className="flex justify-center mt-8 gap-2 md:hidden">
+              <div className="flex justify-center mt-4 gap-2 sm:hidden">
                 <button 
                   onClick={prevProject} 
                   disabled={currentIndex === 0}
-                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
                     currentIndex === 0 
                       ? 'bg-white/5 text-white/30 cursor-not-allowed' 
                       : 'bg-white/10 text-white hover:bg-fuchsia-500'
                   }`}
                   aria-label="Previous project"
                 >
-                  <ChevronLeft size={20} />
+                  <ChevronLeft size={16} />
                 </button>
                 
                 <button 
                   onClick={nextProject} 
                   disabled={currentIndex >= maxIndex}
-                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
                     currentIndex >= maxIndex 
                       ? 'bg-white/5 text-white/30 cursor-not-allowed' 
                       : 'bg-white/10 text-white hover:bg-fuchsia-500'
                   }`}
                   aria-label="Next project"
                 >
-                  <ChevronRight size={20} />
+                  <ChevronRight size={16} />
                 </button>
               </div>
             )}
 
-            <div className="flex justify-center mt-12">
+            <div className="flex justify-center mt-8 md:mt-10">
               <a 
                 href="#contact"
-                className="px-8 py-3 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-medium rounded-full transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 group"
+                className="px-5 py-2 sm:px-6 sm:py-2.5 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-medium rounded-full transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 group text-xs sm:text-sm"
               >
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-1.5">
                   Want to create something amazing? 
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-cyan-500 font-semibold group-hover:translate-x-1 transition-transform duration-300">
                     Let's talk
