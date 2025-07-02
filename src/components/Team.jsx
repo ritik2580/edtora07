@@ -7,13 +7,13 @@ const teamMembers = [
     name: "Laxman Singh Panwar",
     position: "Founder",
     bio: "Laxman Singh Panwar is the founder of FrameForge. He has a strong interest in visual storytelling and enjoys bringing creative ideas to life through video.",
-    image: "laxman.jpg"
+    image: "./laxman.jpg"
   },
   {
     name: "Ayush Rawat",
     position: "Co-Founder",
     bio: "Ayush Rawat is the co-founder bringing valuable experience in the video editing field. With a background in content creation and a practical approach to problem-solving.",
-    image: "ayush.jpg"
+    image: "./ayush.jpg"
   }
 ];
 
