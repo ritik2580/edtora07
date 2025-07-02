@@ -46,7 +46,7 @@ const Navbar = () => {
       animate="visible"
       variants={navVariants}
     >
-      <div className="container mx-auto px-6 flex justify-between items-center">
+      <div className="container mx-auto px-4 sm:px-6 flex justify-between items-center">
         <motion.div 
           className="text-2xl font-bold font-display tracking-wider text-white" 
           variants={itemVariants}
