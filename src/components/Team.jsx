@@ -6,7 +6,7 @@ const teamMembers = [
   {
     name: "Laxman Singh Panwar",
     position: "Founder",
-    bio: "Laxman Singh Panwar is the founder of FrameForge. He has a strong interest in visual storytelling and enjoys bringing creative ideas to life through video.",
+    bio: "Laxman Singh Panwar is the founder of Editora. He has a strong interest in visual storytelling and enjoys bringing creative ideas to life through video.",
     image: "/laxman.jpg"
   },
   {
@@ -56,7 +56,7 @@ const Team = () => {
             <h2 className="text-3xl md:text-4xl font-bold font-display mb-4">Our Team</h2>
             <div className="w-20 h-1 bg-gradient-to-r from-fuchsia-500 to-cyan-500 mx-auto"></div>
             <p className="text-white/70 max-w-xl mx-auto mt-6">
-              Meet the creative minds behind FrameForge.
+              Meet the creative minds behind Editora.
             </p>
           </motion.div>
 
