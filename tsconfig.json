@@ -14,11 +14,16 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* JS interop */
+    "allowJs": true,
+    "checkJs": false,
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "plugins"]
+  "include": ["src", "plugins"],
+  "exclude": ["node_modules"]
 }
