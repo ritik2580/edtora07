@@ -23,7 +23,7 @@ const App = () => {
     // Simulate loading time
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 3500); // Extended loading time to showcase the new loader
 
     return () => clearTimeout(timer);
   }, []);
@@ -34,12 +34,12 @@ const App = () => {
         <Loader isLoading={loading} />
         
         {/* Particles Background */}
-        <div className={`transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}>
+        <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
           <ParticleBackground />
         </div>
         
         {/* Main content */}
-        <div className={`transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}>
+        <div className={`transition-opacity duration-1000 ${loading ? 'opacity-0' : 'opacity-100'}`}>
           <Navbar />
           <main>
             <Hero />
