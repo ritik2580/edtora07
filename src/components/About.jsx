@@ -56,7 +56,7 @@ const About = () => {
               <div className="bg-white/5 backdrop-blur-sm p-8 rounded-xl border border-white/10 shadow-xl hover:shadow-fuchsia-500/5 transition-all duration-500">
                 <h3 className="text-2xl font-bold mb-4 text-white">Our Story</h3>
                 <p className="text-white/70 mb-6">
-                  FrameForge pushes the boundaries of digital creativity, crafting immersive visual experiences that captivate and inspire. Our team of designers, animators, and digital artists transform concepts into stunning visual realities.
+                  Editora pushes the boundaries of digital creativity, crafting immersive visual experiences that captivate and inspire. Our team of designers, animators, and digital artists transform concepts into stunning visual realities.
                 </p>
                 <p className="text-white/70">
                   With expertise in Motion Graphics and video production, we deliver cutting-edge content that helps brands stand out in today's visual-centric world.
