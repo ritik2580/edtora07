@@ -14,14 +14,36 @@ const Contact = () => {
   });
 
   
-  const onSubmit = (data) => {
-    console.log(data);
-    // In a real application, you would send this data to your backend
-    // For this demo, we'll simulate a successful submission
-    setTimeout(() => {
-      setIsSubmitted(true);
-    }, 1000);
+const onSubmit = async (data) => {
+  const formData = {
+    access_key: "fcb9db27-b4aa-46c2-9b5f-7348bad59b15",
+    subject: data.subject || "New Contact Form Submission",
+    name: data.name,
+    email: data.email,
+    message: data.message
   };
+
+  try {
+    const res = await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const result = await res.json();
+    if (result.success) {
+      setIsSubmitted(true);
+    } else {
+      alert("❌ Message failed to send. Try again later.");
+    }
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    alert("❌ An error occurred. Try again later.");
+  }
+};
 
   const sectionVariants = {
     hidden: { opacity: 0 },
