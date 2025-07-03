@@ -1,23 +1,35 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
-import laxmanImg from 'laxman.jpg';
-import ayushImg from 'ayush.jpg';
 
 const teamMembers = [
   {
     name: "Laxman Singh Panwar",
     position: "Founder",
     bio: "Laxman Singh Panwar is the founder of Editora. He has a strong interest in visual storytelling and enjoys bringing creative ideas to life through video.",
-    image: "laxmanImg"
+    image: "/laxman.jpg", // public folder path
   },
   {
     name: "Ayush Rawat",
     position: "Co-Founder",
     bio: "Ayush Rawat is the co-founder bringing valuable experience in the video editing field. With a background in content creation and a practical approach to problem-solving.",
-    image: "ayushImg"
-  }
+    image: "/ayush.jpg", // public folder path
+  },
 ];
+{teamMembers.map((member, index) => (
+  <motion.div key={index} className="team-card">
+    <img src={member.image} alt={member.name} className="w-full h-64 object-cover rounded-md mb-4" />
+    <h3>{member.name}</h3>
+    <p>{member.position}</p>
+    <p>{member.bio}</p>
+    <div className="flex gap-3 text-blue-400 justify-center mt-2">
+      <Facebook />
+      <Instagram />
+      <Linkedin />
+      <Twitter />
+    </div>
+  </motion.div>
+))}
 
 const Team = () => {
   const [ref, inView] = useInView({
