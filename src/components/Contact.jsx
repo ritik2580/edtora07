@@ -80,8 +80,8 @@ const Contact = () => {
                     </div>
                     <div>
                       <h4 className="text-white font-medium mb-1">Phone</h4>
-                      <p className="text-white/70">+91 9536428507</p>
-                       <p className="text-white/70">+91 7668128424</p>
+                      <p className="text-white/70">+91  9536428507</p>
+                       <p className="text-white/70">+91  7668128424</p>
                     </div>
                   </motion.div>
                   
@@ -129,7 +129,8 @@ const Contact = () => {
                         rel="noopener noreferrer"
                         className="text-white/70 hover:text-fuchsia-400 transition-colors"
                       >
-                        @editorastudio07
+                        @editorastudio07 
+                        
                       </a>
                     </div>
                   </motion.div>
