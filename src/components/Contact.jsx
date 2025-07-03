@@ -13,6 +13,7 @@ const Contact = () => {
     threshold: 0.1,
   });
 
+  
   const onSubmit = (data) => {
     console.log(data);
     // In a real application, you would send this data to your backend
